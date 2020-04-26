@@ -26,6 +26,18 @@ Then, run the migration with:
       // fullHost: 'http://10.70.1.192:8190',
       network_id: "1"
     },
+    testnet: {
+      privateKey: process.env.PRIVATE_KEY_MAINNET,
+
+      userFeePercentage: 100,
+      feeLimit: 1e9,
+      originEnergyLimit: 1e7,
+      fullNode: "https://fullnode-testnet.sonicxhub.com",
+      solidityNode: "https://solnode-testnet.sonicxhub.com",
+      eventServer: "https://event-testnet.sonicxhub.com",
+      fullHost: "https://fullnode-testnet.sonicxhub.com",
+      network_id: "2"
+    },
     useZeroFourCompiler: true
   }
 }

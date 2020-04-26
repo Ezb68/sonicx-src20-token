@@ -3,16 +3,26 @@ const SonicxWeb = require('sonicxweb');
 
 const gPrivateKey = 'D8B708BFFFA424473D83349CF4C6A2395E4436E065B60F0BF31E582281256D1C';
 
+// const sonicxWeb = new SonicxWeb({
+//     fullNode: 'https://fullnode.sonicxhub.com',
+//     solidityNode: 'https://solnode.sonicxhub.com',
+//     eventServer: 'https://event.sonicxhub.com/',
+//     // fullNode: 'http://10.70.1.192:8190',
+//     // solidityNode: 'http://10.70.1.192:8191',
+//     // eventServer: 'http://10.70.1.192:8080',
+//     privateKey: gPrivateKey,
+//   }
+// )
+
+// testnet
 const sonicxWeb = new SonicxWeb({
-    fullNode: 'https://fullnode.sonicxhub.com',
-    solidityNode: 'https://solnode.sonicxhub.com',
-    eventServer: 'https://event.sonicxhub.com/',
-    // fullNode: 'http://10.70.1.192:8190',
-    // solidityNode: 'http://10.70.1.192:8191',
-    // eventServer: 'http://10.70.1.192:8080',
+    fullNode: 'https://fullnode-testnet.sonicxhub.com',
+    solidityNode: 'https://solnode-testnet.sonicxhub.com',
+    eventServer: 'https://event-testnet.sonicxhub.com/',
     privateKey: gPrivateKey,
   }
 )
+
 var contract = require('./build/contracts/SRC20.json');
 
 getSoxBalance = async (address) => {
@@ -23,6 +33,19 @@ getSoxBalance = async (address) => {
     } catch (err) {
         console.log(err);
         return 0;
+    }
+}
+
+transferSox = async (toAddress, amount, privateKey) => {
+    try {
+        sonicxWeb.setPrivateKey(privateKey);
+        let ret = await sonicxWeb.trx.sendTransaction(toAddress, amount);
+        let transaction = ret.transaction;
+        let txId = transaction.txID;
+        return txId;
+    } catch (err) {
+        console.log(err);
+        return null;
     }
 }
 
@@ -107,7 +130,7 @@ transfer = async (token, toAddress, amount, privateKey) => {
         console.log(err);
         return null;
     }
-},
+}
 
 transferAndConfirm = async (token, toAddress, amount, privateKey) => {
     try {
@@ -125,7 +148,7 @@ transferAndConfirm = async (token, toAddress, amount, privateKey) => {
         console.log(err);
         return null;
     }
-},
+}
 
 approve = async (token, spender, amount, privateKey) => {
     try {
@@ -226,15 +249,17 @@ burnFrom = async (token, from, amount, privateKey) => {
 }
 
 startEventListener = async () => {
-    const contractAddress = "SjnYdUrA3suZXmi6G8t7r7YSsVHheK56oZ"; // for test
+    // const contractAddress = "SjnYdUrA3suZXmi6G8t7r7YSsVHheK56oZ"; // for mainnet test
+    const contractAddress = "SR3FtioftA36KnDM7usbf2ERQVj7QrZWpU"; // for testnet test
 
     const spender = 'SRsPtnVinRTky2tE2Z9RYeNs12PLywNUeQ';
-    const address = 'SNA5wY1EQn1NCJPBPmNC5mb4D1enyw72aj';
     const toAddress = 'SgvT8Qz3fQQcqLfufC3tro6JnD2cMpLdnz';
-    const privateKey = gPrivateKey;
 
-    // const soxBalance = await getSoxBalance(address)
-    // console.log('SOX balance=', soxBalance.toString());
+    const privateKey = gPrivateKey;
+    const address = sonicxWeb.address.fromPrivateKey(privateKey)
+
+    const soxBalance = await getSoxBalance(address)
+    console.log('SOX balance=', soxBalance.toString());
 
     tokenObj = getToken(contractAddress)
 
@@ -261,11 +286,19 @@ startEventListener = async () => {
     // let ret = await approve(tokenObj, spender, approveAmount.toNumber(), privateKey)
     // console.log("approved:", ret);
 
-    // let sendAmount = new BigNumber(10);
+    // let sendAmount = new BigNumber(1);
     // sendAmount = sendAmount.shiftedBy(decimals).integerValue();
     // let txId = await transferAndConfirm(tokenObj, toAddress, sendAmount.toNumber(), privateKey)
     // if (txId) {
     //     console.log("txId=", txId);
     // }
+
+    // let sendAmount = new BigNumber(9997);
+    // sendAmount = sendAmount.shiftedBy(6).integerValue();
+    // let txId = await transferSox(toAddress, sendAmount.toNumber(), privateKey)
+    // if (txId) {
+    //     console.log("txId=", txId);
+    // }
+
 }
 startEventListener();

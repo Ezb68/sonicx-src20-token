@@ -19,10 +19,10 @@ contract SRC20 is ISRC20, MinterRole {
     mapping (address => uint256) internal _balances;
     mapping (address => mapping (address => uint256)) internal _allowed;
 
-    function name() public view returns (string) {
+    function name() public view returns (string memory) {
         return _name;
     }
-    function symbol() public view returns (string) {
+    function symbol() public view returns (string memory) {
         return _symbol;
     }
     function decimals() public view returns (uint8) {
@@ -166,7 +166,7 @@ contract SRC20 is ISRC20, MinterRole {
      * make sure this function name matches the contract name above. So if you're token is called TutorialToken, make sure the 
      * contract name above is also TutorialToken instead of SRC20Token
      */
-    constructor(string name_, string symbol_, uint8 decimals_, uint256 supply_) public {
+    constructor(string memory name_, string memory symbol_, uint8 decimals_, uint256 supply_) public {
         uint256 precision = decimals_;
         supply_ = supply_ * (10 ** precision);
 

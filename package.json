@@ -1,13 +1,25 @@
 {
-  "name": "src20",
+  "name": "@sonicxchain/src20",
   "version": "1.0.0",
-  "description": "",
+  "homepage": "https://sonicx.org/",
+  "description": "SRC20 token contract",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SonicXChain/sonicx-src20-token"
+  },
+  "keywords": [
+    "sonicx",
+    "src20"
+  ],
+  "files": [
+    "contracts",
+    "build"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "bignumber.js": "^9.0.0",
     "ora": "^4.0.3",
